@@ -1119,7 +1119,7 @@ abstract class S2State<T> extends State<SmartSelect<T>> {
       autofocus: true,
       controller: filter!.ctrl,
       style: modalHeaderStyle.textStyle,
-      cursorColor: modalConfig.isFullPage ? Colors.white : theme.cursorColor,
+      cursorColor: modalConfig.isFullPage ? Colors.white : theme.accentColor,
       textInputAction: TextInputAction.search,
       decoration: InputDecoration.collapsed(
         hintText: modalConfig.filterHint ?? 'Search on $title',
@@ -1182,15 +1182,10 @@ abstract class S2State<T> extends State<SmartSelect<T>> {
           child: Padding(
             padding: modalConfig.confirmMargin ??
                 const EdgeInsets.fromLTRB(0, 0, 10, 0),
-            child: FlatButton.icon(
+            child: TextButton.icon(
+              onPressed: onPressed,
               icon: modalConfig.confirmIcon!,
               label: modalConfig.confirmLabel!,
-              color:
-                  modalConfig.confirmIsDark ? modalConfig.confirmColor : null,
-              textColor: modalConfig.confirmIsLight
-                  ? modalConfig.confirmColor
-                  : Colors.white,
-              onPressed: onPressed,
             ),
           ),
         );
@@ -1199,16 +1194,22 @@ abstract class S2State<T> extends State<SmartSelect<T>> {
           child: Padding(
             padding: modalConfig.confirmMargin ??
                 const EdgeInsets.fromLTRB(0, 0, 10, 0),
-            child: FlatButton(
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                textStyle: TextStyle(color: modalConfig.confirmIsLight
+                    ? modalConfig.confirmColor
+                    : Colors.white),
+                primary: modalConfig.confirmIsDark
+                    ? modalConfig.confirmColor ?? Colors.blueGrey
+                    : null,
+                fixedSize: Size.fromWidth(100),
+                padding: EdgeInsets.all(10),
+              ),
               child: modalConfig.confirmLabel!,
-              color: modalConfig.confirmIsDark
-                  ? modalConfig.confirmColor ?? Colors.blueGrey
-                  : null,
-              textColor: modalConfig.confirmIsLight
-                  ? modalConfig.confirmColor
-                  : Colors.white,
-              onPressed: onPressed,
-            ),
+              onPressed: () {
+                onChange();
+              },
+            )
           ),
         );
       }
